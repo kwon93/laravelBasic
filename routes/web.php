@@ -87,4 +87,19 @@ Route::post('/articles', function (Request $request) {
     return 'hello';
 });
 
+Route::get('articles', function(Request $request){
+    $perPage = $request->input('perPage', 2);
+    $articles = Article::with('user')
+    ->select('body', 'users_id', 'created_at')
+    ->latest()
+    ->paginate($perPage);
+
+
+    return view('articles.index', [
+        'articles' => $articles,
+    ]);
+});
+
+
+
 require __DIR__.'/auth.php';
