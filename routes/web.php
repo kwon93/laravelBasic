@@ -1,15 +1,17 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
 use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Article;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,85 +23,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// 글쓰기 화면
-Route::get('/articles/create', function () {
-    return view('/articles/create');
+
+Route::controller(ArticleController::class)->group(function(){
+    // 글쓰기 화면
+    Route::get('/articles/create', 'create')->name('articles.create');
+    //글 쓰기 
+    Route::post('/articles', 'store')->name('articles.store');
+    //글 목록 조회
+    Route::get('articles', 'index')->name('articles.index');
+    //글 상세 조회
+    Route::get('articles/{article}', 'show')->name('articles.show');
+    //글 수정페이지 조회
+    Route::get('articles/{article}/edit', 'edit')->name('articles.edit');
+    //글 수정 
+    Route::put('articles/{article}', 'update')->name('articles.update');
+    //글 삭제
+    Route::delete('articles/{article}', 'delete')->name('aritcles.delete');
 });
-
-//글 쓰기 
-Route::post('/articles', function (Request $request) {
-    $input = $request->validate([
-        'body' => [
-            'required',
-            'string',
-            'max:255'
-        ],
-    ]);
-    //PDT 이용방법.
-    // $host = config('database.connections.mysql.host');
-    // $dbname= config('database.connections.mysql.database');
-    // $username = config('database.connections.mysql.username');
-    // $password = config('database.connections.mysql.password');
-
-    // $conn = new PDO("mysql:host=$host;dbname=$dbname",$username, $password);
-
-    // $stmt = $conn->prepare(
-    //     "INSERT INTO articles (body, users_id)
-    //     VALUES (:body, :userId)
-    //     "
-    // );
-
-    // $body = $request->input('body');
-
-    // $stmt->bindValue(':body' ,$input['body']);
-    // $stmt->bindValue(':userId' , $request->user()->id);
-
-    // $stmt->execute();
-
-    // Laravel DB Facade 사용 
-    // DB::statement("
-    //     INSERT INTO articles (body, users_id)
-    //     VALUES (:body, :userId)",
-    //     ['body' => $input['body'], 'userId' => $request->user()->id]
-    // );
-
-    //queryBuilder 사용
-    // DB::table('articles')->insert(
-    //     [
-    //         'body' => $input['body'],
-    //         'users_id' => $request->user()->id
-    //     ]
-    // );
-
-    //Eloquant ORM 사용
-    // $article = new Article;
-    // $article->body = $input['body'];
-    // $article->users_id = $request->user()->id;
-    // $article->save();
-
-    Article::created(
-        [
-            'body' => $input['body'],
-            'users_id' => $request->user()->id
-        ]
-    );
-
-    return 'hello';
-});
-
-Route::get('articles', function(Request $request){
-    $perPage = $request->input('perPage', 2);
-    $articles = Article::with('user')
-    ->select('body', 'users_id', 'created_at')
-    ->latest()
-    ->paginate($perPage);
-
-
-    return view('articles.index', [
-        'articles' => $articles,
-    ]);
-});
-
-
-
 require __DIR__.'/auth.php';

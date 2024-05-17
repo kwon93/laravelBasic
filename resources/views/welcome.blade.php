@@ -44,9 +44,12 @@
                         @endif
 
                   <div class="max-w7xl mx-auto p-6 lg:p-8">
-                    간단한 웹 사이트 만들어보기
+                    <h1 class="text-2xl">간단한 웹 사이트 만들어봅시다.</h1>
                     <div>
-                        <a href="/articles/create">글쓰기</a>
+                        <a href="{{ route('articles.create') }}">글 쓰기</a>
+                    </div>
+                    <div>
+                        <a href="{{ route('articles.index') }}">글 보기</a>
                     </div>
                   </div>
                 </div>
