@@ -27,7 +27,7 @@
           </a>
           </p>
 
-          <form action="{{ route('aritcles.delete', ['article' => $article->id]) }}" method="POST">
+          <form action="{{ route('articles.delete', ['article' => $article->id]) }}" method="POST">
             @csrf
             @method('DELETE')
             <button class="bg-red-500 p-1 rounded text-white">글 삭제</button>

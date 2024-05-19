@@ -38,6 +38,7 @@ Route::controller(ArticleController::class)->group(function(){
     //글 수정 
     Route::put('articles/{article}', 'update')->name('articles.update');
     //글 삭제
-    Route::delete('articles/{article}', 'delete')->name('aritcles.delete');
+    Route::delete('articles/{article}', 'delete')->name('articles.delete');
 });
+
 require __DIR__.'/auth.php';
