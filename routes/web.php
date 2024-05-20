@@ -24,21 +24,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::controller(ArticleController::class)->group(function(){
-    // 글쓰기 화면
-    Route::get('/articles/create', 'create')->name('articles.create');
-    //글 쓰기 
-    Route::post('/articles', 'store')->name('articles.store');
-    //글 목록 조회
-    Route::get('articles', 'index')->name('articles.index');
-    //글 상세 조회
-    Route::get('articles/{article}', 'show')->name('articles.show');
-    //글 수정페이지 조회
-    Route::get('articles/{article}/edit', 'edit')->name('articles.edit');
-    //글 수정 
-    Route::put('articles/{article}', 'update')->name('articles.update');
-    //글 삭제
-    Route::delete('articles/{article}', 'delete')->name('articles.delete');
-});
+Route::resource('articles', ArticleController::class);
 
 require __DIR__.'/auth.php';
