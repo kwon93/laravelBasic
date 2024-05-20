@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    public function create(){
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index','show']);
+    }
+    public function create()
+    {
         return view('articles/create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $input = $request->validate([
             'body' => [
                 'required',
@@ -31,7 +38,8 @@ class ArticleController extends Controller
         return redirect()->route('articles.index');
     }
     
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $perPage = $request->input('perPage', 3);
         $articles = Article::with('user')
         ->select('id','body', 'users_id', 'created_at')
@@ -44,7 +52,8 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function show(Article $article){
+    public function show(Article $article)
+    {
         return view('/articles.show', [
             'article' => $article
         ]);

@@ -1,11 +1,9 @@
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LarabelBasic</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('글 수정') }}
+        </h2>
+    </x-slot>
 <div class="container p-5">
     <div>
       <a href="{{ route('home')}}">home</a>
@@ -23,5 +21,4 @@
     <button class="button py-1 px-3 bg-black text-white rounded text-xs mt-2 bg-green-500">수정하기</button>
   </form>
 </div>
-</body>
-</html>
+</x-app-layout>
