@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -20,13 +21,7 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        $input = $request->validate([
-            'body' => [
-                'required',
-                'string',
-                'max:255'
-            ],
-        ]);
+        $input = $request->validated();
 
         Article::create(
             [
@@ -63,17 +58,9 @@ class ArticleController extends Controller
         return view('articles.edit', ['article' => $article]);
     }
 
-    public function update(Request $request, Article $article){
-        $this->authorize('update', $article);
+    public function update(UpdateArticleRequest $request, Article $article){
 
-        $input = $request->validate([
-            'body' => [
-                'required',
-                'string',
-                'max:255',
-                'min:5',
-            ]
-        ]);
+        $input = $request->validated();
 
         $article->body = $input['body'];
         $article->save();
