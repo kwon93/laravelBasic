@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class ArticleController extends Controller
         return view('articles/create');
     }
 
-    public function store(Request $request)
+    public function store(CreateArticleRequest $request)
     {
         $input = $request->validated();
 

@@ -16,31 +16,12 @@
           <p class="text-xl"><a href="{{ route('articles.show', ['article' => $article->id]) }}">{{ $article->body }}</a></p>
           <p>{{ $article->user->name }}</p>
           <p class="">{{ $article->created_at->diffForHumans() }}</p>
-          <div class="flex flex-row mt-2">
-            @can('update', $article)
-          <p class="mt-3 text-green-800 mr-1">
-            <a href="{{ route('articles.edit', ['article' => $article->id]) }}"
-              class="bg-green-500 p-1 rounded text-white">
-              글 수정
-          </a>
-          </p>
-            @endcan
-
-            @can('delete', $article)
-          <form action="{{ route('articles.destroy', ['article' => $article->id]) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button class="bg-red-500 p-1 rounded text-white">글 삭제</button>
-          </form>
-            @endcan
-            
-          </div>
+          
+          <x-article-button-group :article=$article />
       </div>
       @endforeach
-
     <div class="container p-5">
       {{$articles->links()}}
     </div>
-
 </div>
 </x-app-layout>
